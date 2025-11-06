@@ -1,20 +1,27 @@
-
+// core/Component.js
 export class Component {
-    constructor( prop = {}) {
-        this.prop = prop;
-        this.elemnt = null;
-    }
+  constructor(props = {}) {
+    this.props = props;
+    this.element = null;
+  }
 
-    render() {
-        throw new Error ("Component Must implemnt render()")
+  render() {
+    throw new Error("Component must implement render()");
+  }
+
+  async mount(parent) {
+    let node = this.render()
+    if (node instanceof Promise) {
+      node = await node;
     }
-    mount(parent) {
-        this.elemnt = this.render()
-        parent.appendChild(this.elemnt)
+    
+    this.element = node;
+    parent.appendChild(this.element);
+  }
+
+  unmount() {
+    if (this.element && this.element.parentNode) {
+      this.element.parentNode.removeChild(this.element);
     }
-    unmount() {
-        if(this.elemnt && this.elemnt.parentNode) {
-            this.elemnt.parentNode.removeChild(this.elemnt)
-        }
-    }
+  }
 }

@@ -1,23 +1,24 @@
-import { Router } from "./core/Router.js";
-import { LoginPAge } from "./Pages/LoginPage.js"
-import { ProfilePage } from "./Pages/ProfilePage.js";
-import { ErrorPage } from "./utils/Storage.js"
+import { Router } from './core/Router.js';
+import { LoginPage } from './Pages/LoginPage.js';
+import { ProfilePage } from './Pages/ProfilePage.js';
+import { Storage } from './utils/Storage.js';
 
 const routes = {
-    '/login': LoginPAge,
+    '/login': LoginPage,
     '/profile': ProfilePage,
-    '*': ErrorPage
+    '*': LoginPage
 };
 
 const router = new Router(routes);
+window.router = router;
 
+const token = Storage.getToken();
 
-// check JWT
-const token = Storage.getToken()
 if (token) {
-    router.navigator('./profile');
-} else {
-    router.navigator('/login')
-}
+    console.log("hhh");
 
-window.router = router
+    router.navigator('/profile');
+    
+} else {
+    router.navigator('/login');
+}

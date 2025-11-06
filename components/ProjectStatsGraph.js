@@ -27,7 +27,6 @@ export class ProjectStatsGraph extends Component {
             text.setAttribute('font-size', "10");
             text.textContent = p.grade >= 1 ? "VAlid" : "Faild";
 
-
         });
         return svg
     }
