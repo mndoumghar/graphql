@@ -1,5 +1,5 @@
 
-import { Component } from "react";
+import { Component } from "../core/Component.js";
 
 export class UserInfo extends Component {
     render() {
@@ -14,6 +14,5 @@ export class UserInfo extends Component {
     }
     
 }
-
 const test = new Component();
 test.render();

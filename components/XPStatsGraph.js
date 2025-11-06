@@ -1,4 +1,4 @@
-import { Component } from "../components"
+import { Component } from "../core/Component.js"
 
 export class XPStatsGraph extends Component {
     render() {
