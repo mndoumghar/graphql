@@ -15,10 +15,13 @@ window.router = router;
 const token = Storage.getToken();
 
 if (token) {
-    console.log("hhh");
+    if (typeof token == "undefined") {
+        router.navigator('/login');
 
-    router.navigator('/profile');
-    
+    } else {
+         router.navigator('/profile');
+    }
+
 } else {
     router.navigator('/login');
 }

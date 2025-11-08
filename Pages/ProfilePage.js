@@ -30,30 +30,21 @@ export class ProfilePage extends Page {
             ]);
 
             const user = userData.user[0];
-
-            // container bach ndir fih user-info w about-user b janb b janb
             const infoContainer = document.createElement('div');
             infoContainer.classList.add('containner');
 
-            // User info
             const userInfo = new UserInfo({ user });
             infoContainer.appendChild(userInfo.render());
 
-            // About user
             const aboutUser = new AboutUser({ user: userData });
             infoContainer.appendChild(aboutUser.render());
-
-            // zid lcontainer f profile-page
             div.appendChild(infoContainer);
-
-            // graphs ta7thom
             const XPGraph = new XPStatsGraph({ xpData: userData.xp.transaction });
             XPGraph.mount(div);
-
             const projectGraph = new ProjectStatsGraph({ project: projectsData.transaction });
             projectGraph.mount(div);
-
             spinner.unmount();
+
 
         } catch (err) {
             spinner.unmount();
