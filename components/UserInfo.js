@@ -7,14 +7,17 @@ export class UserInfo extends Component {
     }
 
     render() {
-
         const div = document.createElement('div');
         div.classList.add('user-info');
-        const firstName = this.user.firstName
-        const lastName = this.user.lastName
-        const username = this.user.login
-        const avatar = this.user.avatarUrl
-        const attrs = this.user.attrs
+        const firstName = this.user.firstName;
+        const lastName = this.user.lastName;
+        const username = this.user.login;
+        const avatar = this.user.avatarUrl;
+        const attrs = this.user.attrs;
+        const cin = attrs.cin;
+        const Phone = attrs.tel;
+        const gender = attrs.gender;
+        const addressCity = attrs.addressCity;    
         div.innerHTML = `
          <div class="card-img">
             <img src="${avatar}" alt="Avatar"/>

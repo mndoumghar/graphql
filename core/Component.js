@@ -14,8 +14,8 @@ export class Component {
     if (node instanceof Promise) {
       node = await node;
     }
-    
     this.element = node;
+
     parent.appendChild(this.element);
   }
 
