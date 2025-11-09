@@ -1,0 +1,19 @@
+@import './vars.css';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+    background: linear-gradient(135deg, #0f1720, #1a1c24);
+
+  font-family: var(--font-base);
+  color: var(--text);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}

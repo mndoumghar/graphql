@@ -1,4 +1,6 @@
 import { Component } from "../core/Component.js";
+import { formatXP } from "../utils/FormatXp.js";
+import {getRank} from "../utils/GetRank.js"
 
 export class AboutUser extends Component {
     constructor({ user }) {
@@ -19,13 +21,13 @@ export class AboutUser extends Component {
 
             <div class="card-item">
                 <p>Total XP</p>
-                <span>${totalXP}</span>
+                <span>${formatXP(totalXP)}</span>
             </div>
 
 
             <div class="card-item">
                 <p>Current Level</p>
-                <span>${level}</span>
+                <span>${getRank(level)}</span>
             </div>
             
             <div class="card-item">

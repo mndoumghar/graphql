@@ -10,18 +10,11 @@ const routes = {
 };
 
 const router = new Router(routes);
-window.router = router;
-
+window.router = router
 const token = Storage.getToken();
-
+// CheckToken if Exist 
 if (token) {
-    if (typeof token == "undefined") {
-        router.navigator('/login');
-
-    } else {
-         router.navigator('/profile');
-    }
-
+    router.navigator('/profile');
 } else {
     router.navigator('/login');
 }

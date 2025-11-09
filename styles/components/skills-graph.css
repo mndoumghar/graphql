@@ -1,0 +1,22 @@
+.skills-graph {
+  display: flex;
+  gap: var(--gap);
+}
+
+.skills-graph .chart {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 100px;
+  background: var(--surface);
+  padding: var(--gap);
+  border-radius: 8px;
+}
+
+.skills-graph .bar {
+  width: 20px;
+  background: var(--primary);
+  text-align: center;
+  color: #fff;
+  font-size: var(--font-size-sm);
+}

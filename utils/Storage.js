@@ -1,10 +1,10 @@
 
-export const Storage = {
+export  const  Storage = {
     getToken() {
         return localStorage.getItem('token');
     },
 
-    setToken(token) {
+    async setToken(token) {
 
         localStorage.setItem('token', token);
     },

@@ -1,0 +1,14 @@
+.profile-page {
+  max-width: 1100px;
+  margin: var(--gap-lg) auto;
+  padding: var(--gap-lg);
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: var(--gap-lg);
+}
+
+@media(max-width: 800px) {
+  .profile-page {
+    grid-template-columns: 1fr;
+  }
+}

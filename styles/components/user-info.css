@@ -1,0 +1,23 @@
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--gap);
+}
+
+.user-info img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-info h2 {
+  font-size: var(--font-size-lg);
+}
+
+.user-info p {
+  font-size: var(--font-size-md);
+  color: var(--muted);
+}

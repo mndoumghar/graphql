@@ -1,0 +1,29 @@
+.user-about {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.user-about .card-item {
+  flex: 1 1 120px;
+  padding: var(--gap);
+  text-align: center;
+  background: var(--surface);
+  border-radius: 8px;
+}
+
+.user-about .card-item p {
+  font-size: var(--font-size-sm);
+  color: var(--muted);
+}
+
+.user-about .card-item span {
+  font-weight: bold;
+  font-size: var(--font-size-md);
+}
+
+@media(max-width: 500px) {
+  .user-about .card-item {
+    flex: 1 1 100%;
+  }
+}

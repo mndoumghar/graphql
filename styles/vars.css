@@ -1,0 +1,19 @@
+:root {
+  --bg: #0f1720;
+  --card-bg: #121316;
+  --surface: #14161a;
+  --muted: #9aa4b1;
+  --primary: #26d07c;
+  --text: #e6eef3;
+
+  --gap-sm: 8px;
+  --gap: 10px;
+  --gap-lg: 30px;
+
+  --font-base: sans-serif;
+  --font-size-sm: 12px;
+  --font-size-md: 14px;
+  --font-size-lg: 18px;
+
+  --radius: 10px;
+}

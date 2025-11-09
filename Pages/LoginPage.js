@@ -9,42 +9,49 @@ export class LoginPage extends Page {
 
     render() {
         const div = document.createElement('div');
-        div.classList.add('login-page');
+        div.classList.add('login-box');
 
         div.innerHTML = `
             <h2>Login</h2>
-            <form id="loginForm">
+            <centre>
+          <form id="loginForm">
+            <div class = "user-box">
                 <input type="text" name="username" placeholder="Username or Email" required />
                 <input type="password" name="password" placeholder="Password" required />
                 <button type="submit">Login</button>
-                <p id="message-error" style="color:red;"></p>
-            </form>
+                <div = "error">
+                <p id="message-error"></p>
+                </div>
+            </div>
+        </form>
+            
+            <center>
         `;
         return div;
     }
 
-    mount(parent) {
-        super.mount(parent);
-        const form = document.getElementById('loginForm');
-        const errorMsg = document.getElementById('message-error');
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = form.username.value.trim();
-            const password = form.password.value.trim();
+async mount(parent) {
+  super.mount(parent);
+  const form = document.getElementById('loginForm');
+  const errorMsg = document.getElementById('message-error');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = form.username.value.trim();
+    const password = form.password.value.trim();
 
-            if (!username || !password) {
-                errorMsg.textContent = "Please fill in both fields!";
-                return;
-            }
-
-            try {
-                await Auth.sign(username, password);
-                errorMsg.textContent = "";
-               window.router.navigator('/profile');
-            } catch (err) {
-                console.error(err);
-                errorMsg.textContent = "Login failed, check your credentials!";
-            }
-        });
+    if (!username || !password) {
+      errorMsg.textContent = "Please fill in both fields!";
+      return;
     }
+
+    try {
+      const token = await Auth.sign(username, password);
+      errorMsg.textContent = "";
+      location.hash = '#/';
+    } catch (err) {
+      console.error('Login error:', err);
+      errorMsg.textContent = err?.message || 'Login failed, check your credentials!';
+    }
+  });
+}
 }

@@ -7,8 +7,8 @@ import { GraphQLClient } from '../graphql/Client.js';
 import { Queries } from '../graphql/Queries.js';
 import { Storage } from '../utils/Storage.js';
 import { AboutUser } from '../components/AboutUser.js';
-import { StatsCards } from "../components/StatsCards.js";
 import { SkillsGraph } from "../components/SkillsGraph.js";
+import { Router } from '../core/Router.js';
 
 export class ProfilePage extends Page {
   constructor() {
@@ -17,58 +17,61 @@ export class ProfilePage extends Page {
   }
 
   async render() {
-    const div = document.createElement('div');
-    div.classList.add('profile-page');
+    // inside ProfilePage.render()
+const root = document.createElement('div');
+root.classList.add('profile-page');
 
-    const spinner = new LoadingSpinner();
-    spinner.mount(div);
+// left column (user)
+const leftCol = document.createElement('div');
+leftCol.classList.add('card', 'left-col');
 
-    try {
-      const [userData, projectsData, skillsData, auditsData] = await Promise.all([
-        this.client.query(Queries.USER_INFO),
-        this.client.query(Queries.PROJECT_LIST),
-        this.client.query(Queries.SKILLS),
-        this.client.query(Queries.AUDITS)
-      ]);
+// right column (widgets)
+const rightCol = document.createElement('div');
+rightCol.classList.add('right-col');
 
-      // userData is the full object returned by Queries.USER_INFO
-      const user = userData.user?.[0] || {};
-      const infoContainer = document.createElement('div');
-      infoContainer.classList.add('containner');
+// mount spinner to root while loading
+const spinner = new LoadingSpinner();
+spinner.mount(root);
 
-      // User info + About
-      const userInfo = new UserInfo({ user });
-      infoContainer.appendChild(userInfo.render());
+try {
+  const [userData, projectsData, skillsData, auditsData] = await Promise.all([
+    this.client.query(Queries.USER_INFO),
+    this.client.query(Queries.PROJECT_LIST),
+    this.client.query(Queries.SKILLS),
+    this.client.query(Queries.AUDITS)
+  ]);
 
-      const aboutUser = new AboutUser({ user: userData });
-      infoContainer.appendChild(aboutUser.render());
-      div.appendChild(infoContainer);
+  spinner.unmount();
 
-      // Stats Cards (expects full userData)
-      const statsCards = new StatsCards({ user: userData });
-      div.appendChild(statsCards.render());
+  const user = userData.user?.[0] || {};
 
-      // XP graph (component has mount in your system)
-      const XPGraph = new XPStatsGraph({ xpData: userData.xp?.transaction || [] });
-      if (typeof XPGraph.mount === 'function') XPGraph.mount(div);
-      else div.appendChild(XPGraph.render());
+  // UserInfo card (add .card on component root)
+  const userInfo = new UserInfo({ user });
+  await userInfo.mount(leftCol); // mounts inside leftCol
 
-      // Project graph (pass projects array)
-      const projectGraph = new ProjectStatsGraph({ projects: projectsData.transaction || [] });
-      if (typeof projectGraph.mount === 'function') projectGraph.mount(div);
-      else div.appendChild(projectGraph.render());
+  // AboutUser card
+  const aboutUser = new AboutUser({ user: userData });
+  await aboutUser.mount(leftCol);
 
-      // Skills graph
-      const skillsGraph = new SkillsGraph({ skills: skillsData.user?.[0]?.transactions || [] });
-      div.appendChild(skillsGraph.render());
+  // Skills graph -> put in right column
+  const skillsGraph = new SkillsGraph({ skills: skillsData.user?.[0]?.transactions || [] });
+  await skillsGraph.mount(rightCol);
 
-      spinner.unmount();
-    } catch (err) {
-      spinner.unmount();
-      div.innerHTML = "<p>Failed to load profile data. Please try again.</p>";
-      console.error("Error fetching profile data:", err);
-    }
+  // optionally other widgets
+  const xpWidget = new XPStatsGraph({ data: projectsData });
+  await xpWidget.mount(rightCol);
 
-    return div;
+  // append columns to root
+  root.appendChild(leftCol);
+  root.appendChild(rightCol);
+
+} catch (err) {
+  spinner.unmount();
+  root.innerHTML = `<div class="card"><p>Failed to load profile data. Please try again.</p></div>`;
+  console.error(err);
+}
+
+return root;
+
   }
 }
