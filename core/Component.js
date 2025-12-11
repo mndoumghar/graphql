@@ -1,4 +1,4 @@
-// core/Component.js
+
 export class Component {
   constructor(props = {}) {
     this.props = props;

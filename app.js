@@ -12,7 +12,7 @@ const routes = {
 const router = new Router(routes);
 window.router = router
 const token = Storage.getToken();
-// CheckToken if Exist 
+
 if (token) {
     router.navigator('/profile');
 } else {

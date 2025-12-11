@@ -20,3 +20,10 @@
   color: #fff;
   font-size: var(--font-size-sm);
 }
+.skills-svg {
+  width: 600px;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+
+}
