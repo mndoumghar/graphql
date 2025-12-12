@@ -7,23 +7,27 @@ import { Storage } from '../utils/Storage.js';
 import { AboutUser } from '../components/AboutUser.js';
 import { SkillsGraph } from "../components/SkillsGraph.js";
 import { Logout } from '../components/LogoutButtun.js';
-import {AuditGraph} from "../components/AudioGraph.js"
+import { AuditGraph } from "../components/AudioGraph.js"
+import { Sidebar } from '../components/sidebar.js';
+import { Logo } from '../components/Logo.js'
 
 export class ProfilePage extends Page {
   constructor() {
     super({ title: 'profile' });
     this.client = new GraphQLClient(Storage.getToken());
-
-
+    this.componentsData = {}
   }
 
   async render() {
     const root = document.createElement('div');
     root.classList.add('profile-page');
     const spinner = new LoadingSpinner();
+
+
     spinner.mount(root);
-    const logout = new Logout(root)
-    logout.mount(root)
+
+    const logout = new Logout();
+    logout.mount(root);
 
     try {
       const [userData, projectsData, skillsData, auditsData] = await Promise.all([
@@ -33,29 +37,52 @@ export class ProfilePage extends Page {
         this.client.query(Queries.AUDITS)
       ]);
 
-
-      const user = userData.user?.[0] || {};
-
-      const userInfo = new UserInfo({ user });
-      userInfo.mount(root)
-
-      const aboutUser = new AboutUser({ user: userData });
-      aboutUser.mount(root)
-      const skillsGraph = new SkillsGraph({ skills: skillsData.user?.[0]?.transactions || [] });
-      skillsGraph.mount(root)
-      const auditGraph = new AuditGraph({audits: auditsData.user[0]})
-      auditGraph.mount(root)
+      spinner.unmount();
+      this.componentsData = { userData, projectsData, skillsData, auditsData };
       
+      const userInfo = new UserInfo({ user: userData.user?.[0] || {} });
+      const aboutUser = new AboutUser({ user: userData });
+      const skillsGraph = new SkillsGraph({ skills: skillsData.user?.[0]?.transactions || [] });
+      const auditGraph = new AuditGraph({ audits: auditsData.user[0] });
+      const logo = new Logo()
+      const mainContainer = document.createElement('div');
+      mainContainer.classList.add('main-content');
+      root.appendChild(mainContainer);
 
+      const sidebarItems = [
+        { key: 'graphql', label:   '<h1>Graphql</h1>', component: () => logo },
+        { key: 'profile', label: '👤 Profile', component: () => userInfo },
+        { key: 'about', label: 'ℹ️ About', component: () => aboutUser },
+        { key: 'skills', label: '📊 Skills', component: () => skillsGraph },
+        { key: 'audits', label: '📈 Audit', component: () => auditGraph }
+      ];
 
+      let currentComponent = null;
+
+      const sidebar = new Sidebar({
+        items: sidebarItems,
+        onSelect: async (key) => {
+          mainContainer.innerHTML = ''; 
+          const comp = sidebarItems.find(i => i.key === key)?.component();
+          if (comp) {
+           this.setTitle(key)
+            await comp.mount(mainContainer);
+            currentComponent = comp;
+          }
+        }
+      })
+
+      await sidebar.mount(root);
+      const defaultComp = sidebarItems[0].component();
+      await defaultComp.mount(mainContainer);
+      currentComponent = defaultComp;
 
     } catch (err) {
       spinner.unmount();
-      root.innerHTML = `<div class="card"><p>Failed to load profile data. Please try again.</p></div>`;
+      root.innerHTML = `<div class="card"><p>Failed to load profile data Graphql</p></div>`;
       console.error(err);
     }
 
     return root;
-
   }
 }

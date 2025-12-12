@@ -11,7 +11,8 @@ export class Logout extends Component {
     render() {
         const contraint = document.createElement("div");
         const BtnLogout = document.createElement("button");
-        contraint.classList.add("logout");
+        contraint.classList.add("box-button")
+        BtnLogout.classList.add("logout");
         BtnLogout.textContent = "Logout";
         BtnLogout.addEventListener("click", (e) => {
             e.preventDefault();

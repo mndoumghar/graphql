@@ -9,12 +9,7 @@ export class AuditGraph extends Component {
     render() {
         const root = document.createElement("div");
         root.classList.add("audit-graph", "card");
-        root.style.background = "#444";
-        root.style.padding = "20px";
-        root.style.display = "flex";
-        root.style.flexDirection = "column";
-        root.style.alignItems = "center";
-        root.style.justifyContent = "center";
+        
 
         if (!this.audits) {
             root.textContent = "No audit data found";

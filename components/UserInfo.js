@@ -6,30 +6,41 @@ export class UserInfo extends Component {
         this.user = user || {};
     }
 
-    render() {
-        const div = document.createElement('div');
-        div.classList.add('user-info');
-        const firstName = this.user.firstName;
-        const lastName = this.user.lastName;
-        const username = this.user.login;
-        const avatar = this.user.avatarUrl;
-        const attrs = this.user.attrs;
-        const cin = attrs.cin;
-        const Phone = attrs.tel;
-        const gender = attrs.gender;
-        const addressCity = attrs.addressCity;    
-        div.innerHTML = `
-         <div class="card-img">
-            <img src="${avatar}" alt="Avatar"/>
-        </div>
-                
-         <div class="card-info">
-            <h2>${username}</h2>
-            <p>${firstName} ${lastName}</p>
-        </div>
-    `;
+render() {
+  const div = document.createElement('div');
+  div.className = 'user-info';
 
-        return div
-    }
+  const user = this.user || {};
+  const avatar = user.avatarUrl || 'https://via.placeholder.com/150?text=Avatar';
+  const name = `${user.firstName || ''} ${user.lastName || ''}`
+  const username = user.login 
+  const attrs = user.attrs || {};
+  const cin = attrs.cin || '—';
+  const phone = attrs.tel || '—';
+  const city = attrs.addressCity || '—';
+  const gender = attrs.gender || '—';
+
+  div.innerHTML = `
+    <div class="avatar">
+      <img src="${avatar}" alt="${username} avatar" />
+    </div>
+
+    <div class="meta">
+      <h3>${username}</h3>
+      <p>${name}</p>
+
+      <div class="attrs">
+        <div class="attr">CIN: ${cin}</div>
+        <div class="attr">Tel: ${phone}</div>
+        <div class="attr">City: ${city}</div>
+        <div class="attr">Gender: ${gender}</div>
+      </div>
+    </div>
+
+  `;
+
+
+  return div;
+}
 
 }
