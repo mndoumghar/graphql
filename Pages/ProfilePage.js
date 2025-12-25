@@ -10,6 +10,9 @@ import { Logout } from '../components/LogoutButtun.js';
 import { AuditGraph } from "../components/AudioGraph.js"
 import { Sidebar } from '../components/sidebar.js';
 import { Logo } from '../components/Logo.js'
+import { Projects } from '../components/Projects.js';
+import {router} from '../app.js';
+
 
 export class ProfilePage extends Page {
   constructor() {
@@ -22,8 +25,6 @@ export class ProfilePage extends Page {
     const root = document.createElement('div');
     root.classList.add('profile-page');
     const spinner = new LoadingSpinner();
-
-
     spinner.mount(root);
 
     const logout = new Logout();
@@ -44,6 +45,7 @@ export class ProfilePage extends Page {
       const aboutUser = new AboutUser({ user: userData });
       const skillsGraph = new SkillsGraph({ skills: skillsData.user?.[0]?.transactions || [] });
       const auditGraph = new AuditGraph({ audits: auditsData.user[0] });
+      const projectsComp = new Projects({ projects: projectsData });
       const logo = new Logo()
       const mainContainer = document.createElement('div');
       mainContainer.classList.add('main-content');
@@ -52,6 +54,7 @@ export class ProfilePage extends Page {
       const sidebarItems = [
         { key: 'graphql', label:   '<h1>Graphql</h1>', component: () => logo },
         { key: 'profile', label: '👤 Profile', component: () => userInfo },
+        { key: 'projects', label: '🗂 Projects', component: () => projectsComp },
         { key: 'about', label: 'ℹ️ About', component: () => aboutUser },
         { key: 'skills', label: '📊 Skills', component: () => skillsGraph },
         { key: 'audits', label: '📈 Audit', component: () => auditGraph }
@@ -76,10 +79,12 @@ export class ProfilePage extends Page {
       const defaultComp = sidebarItems[0].component();
       await defaultComp.mount(mainContainer);
       currentComponent = defaultComp;
+      // router.navigator('/cxc');
 
     } catch (err) {
       spinner.unmount();
-      root.innerHTML = `<div class="card"><p>Failed to load profile data Graphql</p></div>`;
+      mainContainer.innerHTML = ""
+       router.navigator('/login');
       console.error(err);
     }
 

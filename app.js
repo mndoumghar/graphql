@@ -9,8 +9,7 @@ const routes = {
     '*': LoginPage
 };
 
-const router = new Router(routes);
-window.router = router
+export const router = new Router(routes); 
 const token = Storage.getToken();
 
 if (token) {

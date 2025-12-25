@@ -60,9 +60,13 @@ h1 {
   background: #2b2b2b;
 }
 
-.sidebar-item.active {
-  background: #26c43d;
-  color: #081207;
+.sidebar-item i[data-lucide],
+.sidebar-item svg {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  flex-shrink: 0;
+  stroke: currentColor;
 }
 
 .card {
@@ -607,3 +611,4 @@ h1 {
     width: 90%;
   }
 }
+

@@ -4,7 +4,7 @@ export class Component {
     this.props = props;
     this.element = null;
   }
-
+    
   render() {
     throw new Error("Component must implement render()");
   }

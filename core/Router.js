@@ -1,5 +1,6 @@
+import { Storage } from "../utils/Storage.js";
 export class Router {
-  constructor(routes) {
+  constructor(routes){
     this.routes = routes;
     this.currentPage = null;
     window.addEventListener("hashchange", () => this.route());
@@ -12,8 +13,16 @@ export class Router {
 
   async route() {
     const path = location.hash.replace('#', '') 
-    const PageClass = this.routes[path] || this.routes["*"];
-    if (!PageClass) return;
+    const PageClass = this.routes[path] 
+    if (!PageClass) {
+
+      if (Storage.getToken()) {
+        location.hash = "/profile";
+        return
+      } 
+        location.hash = "/login";
+      return
+    }
     if (this.currentPage) this.currentPage.unmount();
     this.currentPage = new PageClass();
     await this.currentPage.mount(document.getElementById("app"));
