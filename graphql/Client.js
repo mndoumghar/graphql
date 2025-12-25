@@ -1,3 +1,5 @@
+import { router } from '../app.js';
+
 export class GraphQLClient {
     constructor(token) {
         this.token = token;
@@ -18,6 +20,7 @@ export class GraphQLClient {
         console.log("data " , data);
         
         if (!response.ok || data.errors) {
+            router.navigator('/login');
             console.error('GraphQL Error:', data.errors);
             throw new Error(data.errors?.[0]?.message || 'GraphQL query failed');
         }

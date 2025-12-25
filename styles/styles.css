@@ -612,3 +612,61 @@ h1 {
   }
 }
 
+
+.projects {
+  font-family: sans-serif;
+  max-width: 900px;
+  color: #333;
+}
+
+.projects h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.project-table {
+  width: 100%;
+  border-collapse: separate; 
+  border-spacing: 0 8px; 
+  font-size: 0.85rem;     
+}
+
+.project-header th {
+  text-align: left;
+  padding: 8px 12px;
+  color: #888;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #eee;
+  
+}
+
+.project-row td {
+  background-color: #f9f9f9; 
+  padding: 10px 12px;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.userLogin a {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.8rem;
+}
+
+.userLogin a:hover {
+  text-decoration: underline;
+  color: #000;
+}
+
+.members {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}

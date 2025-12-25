@@ -7,6 +7,7 @@ export class Projects extends Component {
     this.projects = projects;
   }
 
+
   createElement(tagName, className = '', textContent = '') {
     const element = document.createElement(tagName);
     if (className) {
@@ -21,6 +22,10 @@ export class Projects extends Component {
 
   createMemberLink(userLogin) {
     const userLoginDiv = this.createElement('div', 'userLogin');
+    if (!userLogin) {
+      userLoginDiv.textContent = '—';
+      return userLoginDiv;
+    }
     const link = document.createElement('a');
     link.href = `https://profile.zone01oujda.ma/profile/${userLogin}`;
     link.target = '_blank';
@@ -32,26 +37,53 @@ export class Projects extends Component {
   createProjectRow(transaction) {
     const row = this.createElement('tr', 'project-row');
 
-    const projectName = transaction.object?.name || "Unknown";
-    const xp = formatXP(transaction.amount || 0);
-    const date = new Date(transaction.createdAt).toLocaleDateString();
-    const members = transaction.object.progresses?.[0]?.group?.members || [];
-    const leader = transaction.object.progresses?.[0]?.group?.captainLogin || "";
+    const tx = transaction || {};
+    const obj = tx.object || {};
+    const projectName = obj.name || 'Unknown';
+    const description = obj.description || '';
+    const amount = Number(tx.amount) || 0;
+    const xp = formatXP(amount);
+    const date = tx.createdAt ? new Date(tx.createdAt).toLocaleDateString() : '—';
+    const members = obj.progresses?.[0]?.group?.members || [];
+    const leaderLogin = obj.progresses?.[0]?.group?.captainLogin || null;
 
     const nameCell = this.createElement('td', '', projectName);
+    if (description) {
+      const descEl = this.createElement('div', 'project-desc', description);
+      descEl.style.fontSize = '0.85rem';
+      descEl.style.marginTop = '6px';
+      descEl.style.opacity = '0.85';
+      nameCell.appendChild(descEl);
+    }
+
     const xpCell = this.createElement('td', '', xp);
-    xpCell.style.color = transaction.amount > 0 ? '#00FF00' : '#FF0000';
+    xpCell.style.color = amount > 0 ? '#1d361dff' : '#FF0000';
 
     const dateCell = this.createElement('td', '', date);
     const membersCell = this.createElement('td', 'members');
     membersCell.setAttribute('data-label', 'Team Members');
 
-    members.forEach(member => {
-      membersCell.appendChild(this.createMemberLink(member.userLogin));
-    });
+    if (members && members.length) {
+      members.forEach(member => {
+        membersCell.appendChild(this.createMemberLink(member?.userLogin));
+      });
+    } else {
+      membersCell.textContent = '—';
+    }
 
-    const leaderCell = this.createElement('td', '', leader);
+    const leaderCell = this.createElement('td');
     leaderCell.setAttribute('data-label', 'Team Leader');
+    if (leaderLogin) {
+      const a = document.createElement('a');
+      a.href = `https://profile.zone01oujda.ma/profile/${leaderLogin}`;
+      a.target = '_blank';
+      a.textContent = leaderLogin;
+      a.classList.add('member-badge');
+      leaderCell.appendChild(a);
+    } else {
+      leaderCell.textContent = '—';
+    }
+
     nameCell.setAttribute('data-label', 'Project');
     xpCell.setAttribute('data-label', 'XP');
     dateCell.setAttribute('data-label', 'Created At');
@@ -62,7 +94,7 @@ export class Projects extends Component {
     row.appendChild(membersCell);
     row.appendChild(leaderCell);
 
-    return row
+    return row;
   }
 
 
@@ -86,6 +118,8 @@ export class Projects extends Component {
     table.appendChild(headerRow);
 
     this.projects.transaction.forEach(transaction => {
+      const leaderLogin = transaction?.object?.progresses?.[0]?.group?.captainLogin;
+      if (!leaderLogin) return
       const row = this.createProjectRow(transaction);
       table.appendChild(row);
     });

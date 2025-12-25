@@ -66,6 +66,7 @@ export class ProfilePage extends Page {
         items: sidebarItems,
         onSelect: async (key) => {
           mainContainer.innerHTML = ''; 
+
           const comp = sidebarItems.find(i => i.key === key)?.component();
           if (comp) {
            this.setTitle(key)
