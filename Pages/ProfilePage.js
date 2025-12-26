@@ -25,7 +25,6 @@ export class ProfilePage extends Page {
     root.classList.add('profile-page');
     const spinner = new LoadingSpinner();
     spinner.mount(root);
-
     const logout = new Logout();
     logout.mount(root);
 
