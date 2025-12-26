@@ -11,8 +11,7 @@ import { AuditGraph } from "../components/AudioGraph.js"
 import { Sidebar } from '../components/sidebar.js';
 import { Logo } from '../components/Logo.js'
 import { Projects } from '../components/Projects.js';
-import {router} from '../app.js';
-
+import { router } from '../app.js';
 
 export class ProfilePage extends Page {
   constructor() {
@@ -52,12 +51,11 @@ export class ProfilePage extends Page {
       root.appendChild(mainContainer);
 
       const sidebarItems = [
-        { key: 'graphql', label:   '<h1>Graphql</h1>', component: () => logo },
-        { key: 'profile', label: '👤 Profile', component: () => userInfo },
-        { key: 'projects', label: '🗂 Projects', component: () => projectsComp },
-        { key: 'about', label: 'ℹ️ About', component: () => aboutUser },
-        { key: 'skills', label: '📊 Skills', component: () => skillsGraph },
-        { key: 'audits', label: '📈 Audit', component: () => auditGraph }
+        { key: 'profile', label: 'Profile', icon: 'user', component: () => userInfo },
+        { key: 'projects', label: 'Projects', icon: 'folder-open', component: () => projectsComp },
+        { key: 'about', label: 'About', icon: 'info', component: () => aboutUser },
+        { key: 'skills', label: 'Skills', icon: 'bar-chart-3', component: () => skillsGraph },
+        { key: 'audits', label: 'Audit', icon: 'trending-up', component: () => auditGraph }
       ];
 
       let currentComponent = null;
@@ -69,23 +67,20 @@ export class ProfilePage extends Page {
 
           const comp = sidebarItems.find(i => i.key === key)?.component();
           if (comp) {
-           this.setTitle(key)
+            this.setTitle(key)
             await comp.mount(mainContainer);
             currentComponent = comp;
           }
         }
       })
-
       await sidebar.mount(root);
       const defaultComp = sidebarItems[0].component();
       await defaultComp.mount(mainContainer);
       currentComponent = defaultComp;
-      // router.navigator('/cxc');
-
     } catch (err) {
       spinner.unmount();
       mainContainer.innerHTML = ""
-       router.navigator('/login');
+      router.navigator('/login');
       console.error(err);
     }
 

@@ -20,7 +20,6 @@ export class LoginPage extends Page {
     formBox.innerHTML = `
       <h1>GraphQl</h1>
       <p class="subtitle">Log in </p>
-
       <form id="loginForm">
         <div class="input-group">
           <input type="text" name="username" required />
@@ -54,8 +53,7 @@ export class LoginPage extends Page {
 
       const username = form.username.value.trim();
       const password = form.password.value.trim();
-
-      if (!username || !password) {
+    if (!username || !password) {
         errorMsg.textContent = "Both fields required.";
         return;
       }
